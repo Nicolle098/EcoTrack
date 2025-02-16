@@ -104,7 +104,6 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
               subtitle: const Text('Manage your blocked users list'),
               trailing: const Icon(Icons.arrow_forward),
               onTap: () {
-                // Navigate to blocked users screen
               },
             ),
             const Divider(),
@@ -113,7 +112,6 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
               subtitle: const Text('Permanently delete your account'),
               trailing: const Icon(Icons.delete, color: Color.fromARGB(255, 133, 211, 211)),
               onTap: () {
-                // Confirm and delete account
               },
             ),
           ],

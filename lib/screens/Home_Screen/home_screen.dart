@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:modernlogintute/screens/home_feature_screen.dart';
-import 'package:modernlogintute/screens/help_feature_screen.dart';
-import 'package:modernlogintute/screens/improve_feature_screen.dart';
-import 'package:modernlogintute/screens/board_feature_screen.dart';
-import 'package:modernlogintute/screens/account_screen.dart';
+import 'package:modernlogintute/screens/Home_Screen/home_feature_screen.dart';
+import 'package:modernlogintute/screens/Help_Screen/chatbot_screen.dart'; 
+import 'package:modernlogintute/screens/News/improve_feature_screen.dart';
+import 'package:modernlogintute/screens/Account_Screen/account_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,11 +14,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _widgetOptions = <Widget>[
+  static final List<Widget> _widgetOptions = <Widget>[
     HomeFeatureScreen(),
-    HelpFeatureScreen(),
+    ChatbotScreen(), 
     ImproveFeatureScreen(),
-    BoardFeatureScreen(),
+    AccountScreen(), 
   ];
 
   void _onItemTapped(int index) {
@@ -31,22 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(192, 214, 228, 1000),
-      appBar: AppBar(
-        title: const Text('EcoTrack'),
-        backgroundColor: const Color.fromARGB(192, 214, 228, 1000),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.account_circle),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AccountScreen()),
-              );
-            },
-          ),
-        ],
-      ),
+      backgroundColor: Colors.grey[100],
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -62,16 +46,16 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.priority_high),
-            label: 'Improve',
+            label: 'News',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.spa),
-            label: 'Board',
+            icon: Icon(Icons.account_circle),
+            label: 'Account',
           ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
+        unselectedItemColor: const Color.fromARGB(255, 158, 158, 158),
         onTap: _onItemTapped,
       ),
     );

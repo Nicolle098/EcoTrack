@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:modernlogintute/screens/login_screen.dart';
+import 'package:modernlogintute/screens/Login_Screen/login_screen.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -57,11 +57,14 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   Future<void> _pickImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      _uploadImage(File(image.path));
-    }
+  final picker = ImagePicker();
+  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+  if (pickedFile != null) {
+    final File image = File(pickedFile.path);
+    await _uploadImage(image);
   }
+}
 
   Future<void> _uploadImage(File image) async {
     try {
@@ -70,7 +73,7 @@ class _AccountScreenState extends State<AccountScreen> {
       final downloadUrl = await storageRef.getDownloadURL();
       await user!.updatePhotoURL(downloadUrl);
       setState(() {
-        // Update the UI with the new profile picture URL
+        user = FirebaseAuth.instance.currentUser;
       });
     } catch (e) {
       print('Error uploading image: $e');
@@ -96,14 +99,14 @@ class _AccountScreenState extends State<AccountScreen> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop(); 
               },
               child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                _signOut(context); // Proceed with sign out
+                Navigator.of(context).pop(); 
+                _signOut(context); 
               },
               child: const Text('Logout'),
             ),
@@ -124,17 +127,15 @@ class _AccountScreenState extends State<AccountScreen> {
     DocumentReference docRef = FirebaseFirestore.instance.collection('users').doc(user!.uid);
 
     try {
-      // Check if the document exists
       await docRef.get().then((docSnapshot) {
         if (docSnapshot.exists) {
-          // Document exists, update it
           docRef.update({
             'username': usernameController.text,
           }).then((_) {
             setState(() {
               username = usernameController.text;
             });
-            _saveUserData(); // Save the updated username
+            _saveUserData(); 
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Username updated successfully.")),
             );
@@ -144,15 +145,14 @@ class _AccountScreenState extends State<AccountScreen> {
             );
           });
         } else {
-          // Document doesn't exist, create it
           docRef.set({
             'username': usernameController.text,
-            'points': points, // Initialize points if creating a new document
+            'points': points, 
           }).then((_) {
             setState(() {
               username = usernameController.text;
             });
-            _saveUserData(); // Save the updated username
+            _saveUserData(); 
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Username created successfully.")),
             );
@@ -202,14 +202,14 @@ class _AccountScreenState extends State<AccountScreen> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop(); 
               },
               child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                _changePassword(); // Proceed with change password
+                Navigator.of(context).pop(); 
+                _changePassword(); 
               },
               child: const Text('Change Password'),
             ),
@@ -259,14 +259,14 @@ class _AccountScreenState extends State<AccountScreen> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop(); 
               },
               child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                _deleteAccount(); // Proceed with delete account
+                Navigator.of(context).pop(); 
+                _deleteAccount(); 
               },
               child: const Text('Delete'),
             ),
@@ -284,7 +284,7 @@ class _AccountScreenState extends State<AccountScreen> {
         'subject': 'Support Request'
       }
     );
-    launch(emailLaunchUri.toString());
+    launchUrl(emailLaunchUri);
   }
 
   void _faqs() {
@@ -304,9 +304,9 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(192, 214, 228, 232),
+      backgroundColor: const Color.fromARGB(255, 240, 240, 240), // Lighter background color
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(192, 214, 228, 232),
+        backgroundColor: const Color.fromARGB(255, 240, 240, 240), // Lighter background color
         title: const Text('Account'),
       ),
       body: SingleChildScrollView(
@@ -340,17 +340,25 @@ class _AccountScreenState extends State<AccountScreen> {
             const SizedBox(height: 20),
             TextField(
               controller: usernameController,
-              decoration: const InputDecoration(labelText: 'New Username'),
+              decoration: InputDecoration(
+                labelText: 'New Username',
+                filled: true,
+                fillColor: Colors.grey[100], 
+                border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  borderSide: BorderSide.none,
+                ),
+              ),
             ),
             const SizedBox(height: 10),
             TextButton(
               onPressed: _changeUsername,
               style: TextButton.styleFrom(
-                foregroundColor: const Color.fromARGB(255, 34, 32, 32),
-                  backgroundColor: const Color.fromARGB(192, 214, 228, 1000),
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4.0),
+                foregroundColor: Colors.black87,
+                backgroundColor: const Color.fromARGB(255, 240, 240, 240), // Lighter background color
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
               child: const Text('Change Username',
@@ -361,11 +369,11 @@ class _AccountScreenState extends State<AccountScreen> {
             TextButton(
               onPressed: _inviteFriend,
               style: TextButton.styleFrom(
-                foregroundColor: const Color.fromARGB(255, 34, 32, 32),
-                  backgroundColor: const Color.fromARGB(192, 214, 228, 1000),
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4.0),
+                foregroundColor: Colors.black87,
+                backgroundColor: const Color.fromARGB(255, 240, 240, 240), // Lighter background color
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
               child: const Text('Invite a Friend',
@@ -376,11 +384,11 @@ class _AccountScreenState extends State<AccountScreen> {
             TextButton(
               onPressed: () => _confirmSignOut(context),
               style: TextButton.styleFrom(
-                foregroundColor: const Color.fromARGB(255, 34, 32, 32),
-                  backgroundColor: const Color.fromARGB(192, 214, 228, 1000),
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4.0),
+                foregroundColor: Colors.black87,
+                backgroundColor: const Color.fromARGB(255, 240, 240, 240), // Lighter background color
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
               child: const Text('Logout',
@@ -393,11 +401,11 @@ class _AccountScreenState extends State<AccountScreen> {
             TextButton(
               onPressed: () => _confirmChangePassword(context),
               style: TextButton.styleFrom(
-                foregroundColor: const Color.fromARGB(255, 34, 32, 32),
-                  backgroundColor: const Color.fromARGB(192, 214, 228, 1000),
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4.0),
+                foregroundColor: Colors.black87,
+                backgroundColor: const Color.fromARGB(255, 240, 240, 240), 
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
               child: const Text('Change Password',
@@ -408,11 +416,11 @@ class _AccountScreenState extends State<AccountScreen> {
             TextButton(
               onPressed: _notificationPreferences,
               style: TextButton.styleFrom(
-              foregroundColor: const Color.fromARGB(255, 34, 32, 32),
-                  backgroundColor: const Color.fromARGB(192, 214, 228, 1000),
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4.0),
+                foregroundColor: Colors.black87,
+                backgroundColor: const Color.fromARGB(255, 240, 240, 240), 
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
               child: const Text('Notification Preferences',
@@ -423,11 +431,11 @@ class _AccountScreenState extends State<AccountScreen> {
             TextButton(
               onPressed: _privacySettings,
               style: TextButton.styleFrom(
-              foregroundColor: const Color.fromARGB(255, 34, 32, 32),
-                  backgroundColor: const Color.fromARGB(192, 214, 228, 1000),
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4.0),
+                foregroundColor: Colors.black87,
+                backgroundColor: const Color.fromARGB(255, 240, 240, 240), 
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
               child: const Text('Privacy Settings',
@@ -439,11 +447,11 @@ class _AccountScreenState extends State<AccountScreen> {
             TextButton(
               onPressed: () => _confirmDeleteAccount(context),
               style: TextButton.styleFrom(
-                foregroundColor: const Color.fromARGB(255, 34, 32, 32),
-                  backgroundColor: const Color.fromARGB(192, 214, 228, 1000),
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4.0),
+                foregroundColor: Colors.black87,
+                backgroundColor: const Color.fromARGB(255, 240, 240, 240), 
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
               child: const Text('Delete Account',
@@ -456,11 +464,11 @@ class _AccountScreenState extends State<AccountScreen> {
             TextButton(
               onPressed: _termsOfService,
               style: TextButton.styleFrom(
-                  foregroundColor: const Color.fromARGB(255, 34, 32, 32),
-                  backgroundColor: const Color.fromARGB(192, 214, 228, 1000),
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4.0),
+                foregroundColor: Colors.black87,
+                backgroundColor: const Color.fromARGB(255, 240, 240, 240), 
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
               child: const Text('Terms of Service',
@@ -469,27 +477,27 @@ class _AccountScreenState extends State<AccountScreen> {
             ),
             const Divider(height: 40),
             const Text('Support', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 10), // Add spacing between the text and the first button
-              TextButton(
-                onPressed: _contactSupport,
-                style: TextButton.styleFrom(
-                  foregroundColor: const Color.fromARGB(255, 34, 32, 32),
-                  backgroundColor: const Color.fromARGB(192, 214, 228, 1000),
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                  ),
-                ),
-                child: const Text('Contact Support',
-                style: TextStyle(fontSize: 17),
+            const SizedBox(height: 10),
+            TextButton(
+              onPressed: _contactSupport,
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.black87,
+                backgroundColor: const Color.fromARGB(255, 240, 240, 240),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
-            const SizedBox(height: 10), // Add spacing between the buttons
+              child: const Text('Contact Support',
+              style: TextStyle(fontSize: 17),
+              ),
+            ),
+            const SizedBox(height: 10), 
             TextButton(
               onPressed: _faqs,
               style: TextButton.styleFrom(
-                foregroundColor: const Color.fromARGB(255, 34, 32, 32),
-                backgroundColor: const Color.fromARGB(192, 214, 228, 1000),
+                foregroundColor: Colors.black87,
+                backgroundColor: const Color.fromARGB(255, 240, 240, 240), 
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),

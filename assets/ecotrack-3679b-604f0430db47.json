@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "ecotrack-3679b",
+  "private_key_id": "604f0430db4791cb8a0962e8e70593eda1cc65bf",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC5ZWfQGm58xZ3Y\nth34/fbc4aiVAGu9nLuNMZ7vVcfAN+t05N16Qg8TtAxfDtMqZpDuYp1Rne7TgP5k\nneOFwP7mbRs+RkXHBjvHRWcHTKqO3Mrxlu+66nlHq4yeeeQe7SfUovqYRsn/P/AZ\nblDCRvnr0/b98jvDFUjpwWn166B2+Z9+YYOeAcgQ45Emvm0AqDarA/3rCNXhnqik\nhC3+h383+lVl7CKXcKK3gQVikobsa68WcmzGmqhqxnUmWfxlTxwqXfiC6Vo6Zmap\nBwGjZ0s+iCerdtYLF90BpKK/HiDLGKIDAu5ZnrCTgjADjAJG/MTOu9ukoLPqk+9w\nT5OqjxytAgMBAAECggEAATBXh1PYEAhDYBug2xMj1VxEFLqFNljOMhRWoNHDv2WM\nZro9+lX4m0d9CdICRCQWu1SaDictXCFYYERL7HRlngwmj9JrCaDuWrOE+tzAvjxH\nt99gJ6pvvygoNW7yKcmbBwfJhBb2HiMmkr8smOZUHXFFRPEb9X8KMeeJ2qgZZhHm\naaBSsJENt5rYuxSHP2CT85fnUlHdOo6QSTBTJGQaMMOsJsuM3EY8bIBTCZ6LLpLv\ntMXqNMpbzDZr784U8AV336jQgJzWkRJOHXGXr4sZm4fGQpJOyzXi3oSfEFUWebnr\n9db/wGOli/pMQR6/IpN6yf49ds9f9CLHLNTL/31uQQKBgQDnS9CNsbVr7gGUXZLr\nho17xSx1Pj7SvMAisvWv180zBNMlSxoe6EC0yOpnJZ+eAPpVPHDrEWAOtSRr06OF\nZnRJMpXNO62YmVbKJiBItMki60sMcpt/geLYqRV7UKgh+jQgsrvtqK1RRCEcNs7c\nvu/W+gw1kUzKG+6ylrw4yybY7QKBgQDNMpM0bebC/OxxfBsC1DbbFDn3GgU5QVJc\nD/J/ivAopSZTTbb22LQmIoU7vZWtTXIYFj03kdure+8BHRhkWnBI6kQI57E3GZnH\nAEMVcRvbfcyxBG13a2addL0YiQT18bKXsXadKVBwv2g+8qiVkqQVSmOHlj5HnI2Y\ndkyk3QOawQKBgQCG/Xd9iw7wK9teJPK/ZSsj5mLZFngB9ElKtxmvBArt0M4OgPOA\nwForaOttQccTp0xy/LCGcQCX9N6J094m2DHcGprVShQ58Jx3pKLI7EJLj/mgDS91\nzm9/tcckzmEiW22a+9W0kfJ9cH7GgbJfoUxHMm53wRKJDp5UOqclmmNUzQKBgEed\npCTDSqu5DGibMO4u1Kpnh8eHLFWMR8tbwX3kJud4pESktfu3LEC3AZsVEt02T2C6\nukjfvjQ+f+76kZ3Mtq2sHWyiOIaLh9EddUxRerCDWmJZsj7gnCLOMIUUpUeVQIiS\n5lv5pFqFY0O8+zugv2Wy3cPfmwLxT7Xra9qKTIzBAoGAeYcPQL/rI3BYduyFOQ/j\n1sM99uS0mOMDfj3tA3rjuWzCdSIAfVXu2cvxw36m8oid5rXg/snO9TdjtB6WRiIw\nnuTuw3+Q/rpgUtqll7V3SAYzoE5UUKLavh+FW7228IDDMEKGpoyYruO0XPUf0uBo\nwmKIwIOd/c2jezWXym41c94=\n-----END PRIVATE KEY-----\n",
+  "client_email": "ecotrack@ecotrack-3679b.iam.gserviceaccount.com",
+  "client_id": "109481346833017256246",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ecotrack%40ecotrack-3679b.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modernlogintute/components/my_textfield.dart';
 import 'package:modernlogintute/components/my_button.dart';
-import 'package:modernlogintute/screens/home_screen.dart';
-import 'package:modernlogintute/screens/register_screen.dart';
-import 'package:modernlogintute/screens/verify_email_screen.dart';
-import 'package:modernlogintute/screens/reset_password_screen.dart';
+import 'package:modernlogintute/screens/Home_Screen/home_screen.dart';
+import 'package:modernlogintute/screens/Login_Screen/register_screen.dart';
+import 'package:modernlogintute/screens/Login_Screen/verify_email_screen.dart';
+import 'package:modernlogintute/screens/Login_Screen/reset_password_screen.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -152,7 +152,7 @@ class LoginPage extends StatelessWidget {
                     child: const Text(
                       'Register now',
                       style: TextStyle(
-                        color: Colors.blue,
+                        color: Color.fromARGB(1000, 102, 123, 104),
                         fontWeight: FontWeight.bold,
                     ),
                   ),

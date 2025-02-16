@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:modernlogintute/screens/home_screen.dart'; // Add this import
+import 'package:modernlogintute/screens/Home_Screen/home_screen.dart'; 
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -16,7 +16,7 @@ class AuthPage extends StatelessWidget {
           }
           if (snapshot.hasData) {
             // User is signed in
-            return const HomeScreen(); // Now this will work
+            return const HomeScreen(); 
           } else {
             // User is not signed in
             return const Center(child: Text('User  is not signed in!'));

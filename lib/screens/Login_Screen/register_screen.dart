@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:modernlogintute/screens/verify_email_screen.dart';
+import 'package:modernlogintute/screens/Login_Screen/verify_email_screen.dart';
 import 'package:modernlogintute/components/my_textfield.dart';
 import 'package:modernlogintute/components/my_button.dart';
 import 'package:modernlogintute/services/firestore_service.dart'; // Import the Firestore service

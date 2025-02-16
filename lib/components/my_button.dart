@@ -10,16 +10,16 @@ class MyButton extends StatefulWidget {
 }
 
 class _MyButtonState extends State<MyButton> {
-  Color _buttonColor = Colors.blue;
+  Color _buttonColor = Color.fromARGB(192, 146, 155, 158);
 
   void _changeColor() {
     setState(() {
-      _buttonColor = const Color.fromARGB(255, 18, 111, 187);
+      _buttonColor = Color.fromARGB(192, 146, 155, 158);
     });
 
     Future.delayed(const Duration(milliseconds: 100), () {
       setState(() {
-        _buttonColor = const Color.fromRGBO(33, 150, 243, 1);
+        _buttonColor = Color.fromARGB(192, 146, 155, 158);
       });
     });
   }

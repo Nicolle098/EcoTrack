@@ -1,4 +1,3 @@
-// filepath: /D:/EcoTrack/ecotrack/lib/screens/faq_screen.dart
 import 'package:flutter/material.dart';
 
 class FAQScreen extends StatelessWidget {

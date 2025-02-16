@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:modernlogintute/screens/login_screen.dart';
+import 'package:modernlogintute/screens/Login_Screen/login_screen.dart';
 import 'firebase_options.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,4 +22,3 @@ class EcoTrack extends StatelessWidget {
     );
   }
 }
-
