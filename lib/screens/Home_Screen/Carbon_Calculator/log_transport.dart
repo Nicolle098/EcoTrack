@@ -142,17 +142,27 @@ class _LogTransportScreenState extends State<LogTransportScreen> {
     }
   }
 
+  Future<void> addActivity(String activityName, double emissions) async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return;
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('activities')
+        .add({
+          'activityName': activityName,
+          'emissions': emissions,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+
+    print("Activity added successfully.");
+  }
+
   void _logTransport(double distance) async {
     double emissions = calculateEmissions(transportMode, distance);
     try {
-      await FirebaseFirestore.instance.collection('activities').add({
-        'type': 'Transport',
-        'mode': transportMode,
-        'distance': distance,
-        'emissions': emissions,
-        'timestamp': Timestamp.now(),
-        'userId': FirebaseAuth.instance.currentUser?.uid,
-      });
+      await addActivity('Transport ($transportMode)', emissions);
       print("Activity added successfully!");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -13,11 +14,13 @@ class ImproveFeatureScreen extends StatefulWidget {
 class _ImproveFeatureScreenState extends State<ImproveFeatureScreen> {
   double _totalEmissions = 0.0;
   List<Map<String, dynamic>> _articles = [];
+  String _dailyChallenge = '';
 
   @override
   void initState() {
     super.initState();
     _fetchArticles();
+    _setDailyChallenge();
   }
 
   Future<void> _fetchArticles() async {
@@ -76,6 +79,29 @@ class _ImproveFeatureScreenState extends State<ImproveFeatureScreen> {
     }
   }
 
+  int _calculateTreesToPlant(double footprint) {
+    return (footprint / 20).ceil();
+  }
+
+  void _setDailyChallenge() {
+    List<String> challenges = [
+      "Try to go plastic-free for the whole day! Bring a reusable bag & bottle. ♻️",
+      "Walk or bike to work instead of driving. 🚶‍♂️🚴‍♀️",
+      "Reduce your meat consumption for the day. 🌱",
+      "Unplug electronics when not in use to save energy. 🔌",
+      "Take shorter showers to conserve water. 🚿",
+      "Use a reusable coffee cup instead of a disposable one. ☕",
+      "Recycle paper, plastic, and glass products. ♻️",
+      "Plant a tree or some plants in your garden. 🌳",
+      "Avoid using single-use plastics like straws and cutlery. 🍴",
+      "Support local farmers by buying locally grown produce. 🥕"
+    ];
+
+    setState(() {
+      _dailyChallenge = challenges[Random().nextInt(challenges.length)];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,13 +115,14 @@ class _ImproveFeatureScreenState extends State<ImproveFeatureScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _buildFootprintCard(),
             _buildCard(
               title: "🌎 Offset & Eco-Friendly Actions",
               content: "• Support tree-planting programs\n• Donate to carbon offset projects\n• Use renewable energy sources ⚡",
             ),
             _buildCard(
               title: "💡 Daily Eco-Friendly Challenge",
-              content: "Today's challenge: Try to go plastic-free for the whole day! Bring a reusable bag & bottle. ♻️",
+              content: _dailyChallenge,
             ),
             _buildCard(
               title: "📊 Monthly Carbon Stats",
@@ -103,6 +130,24 @@ class _ImproveFeatureScreenState extends State<ImproveFeatureScreen> {
             ),
             const SizedBox(height: 20),
             _buildArticleSection(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFootprintCard() {
+    return Card(
+      color: Color.fromARGB(255, 237, 240, 238), // Set the background color here
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 4,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("🌱 Based on your footprint, you should plant ${_calculateTreesToPlant(widget.carbonFootprint)} trees."),
           ],
         ),
       ),

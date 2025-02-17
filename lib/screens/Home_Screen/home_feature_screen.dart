@@ -84,7 +84,7 @@ class _HomeFeatureScreenState extends State<HomeFeatureScreen> {
     super.initState();
     _stepCountStream = Pedometer.stepCountStream;
     _stepCountStream.listen(_onStepCount).onError(_onStepCountError);
-    _loadTotalEmissions();
+    _fetchCarbonFootprint();
     _loadCarbonData();
     _loadAQI();
   }
@@ -101,21 +101,65 @@ class _HomeFeatureScreenState extends State<HomeFeatureScreen> {
     });
   }
 
-  Future<void> _loadTotalEmissions() async {
-    QuerySnapshot activities = await FirebaseFirestore.instance.collection('activities').get();
-    double totalEmissions = 0.0;
+  Future<void> _fetchCarbonFootprint() async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return;
 
-    for (var doc in activities.docs) {
-      totalEmissions += doc['emissions'];
+    double totalFootprint = 0.0;
+
+    // Check if the user document exists before querying subcollections
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    if (!userDoc.exists) {
+      print("User document not found.");
+      return;
+    }
+
+    // Fetch activities
+    QuerySnapshot activitySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('activities')
+        .get();
+
+    for (var doc in activitySnapshot.docs) {
+      if (doc['emissions'] != null) {
+        totalFootprint += doc['emissions']; 
+      }
+    }
+
+    // Fetch energy logs
+    QuerySnapshot energySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('log_energy')
+        .get();
+
+    for (var doc in energySnapshot.docs) {
+      if (doc['totalEmissions'] != null) {
+        totalFootprint += doc['totalEmissions'];
+      }
     }
 
     setState(() {
-      _totalEmissions = totalEmissions;
+      _totalEmissions = totalFootprint;
     });
+
+    await FirebaseFirestore.instance.collection('users').doc(userId).update({
+      'carbonFootprint': totalFootprint,
+    });
+
+    print("Fetched carbon footprint: $totalFootprint kg CO2");
   }
 
   Future<void> _loadCarbonData() async {
-    QuerySnapshot activities = await FirebaseFirestore.instance.collection('activities').get();
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return;
+
+    QuerySnapshot activities = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('activities')
+        .get();
     Map<int, double> dailyEmissions = {};
 
     for (var doc in activities.docs) {
@@ -179,16 +223,40 @@ class _HomeFeatureScreenState extends State<HomeFeatureScreen> {
 
   void _refreshData() {
     setState(() {
-      _loadTotalEmissions(); // Refresh total emissions
+      _fetchCarbonFootprint(); // Refresh total emissions
       _loadCarbonData(); // Refresh carbon data
       _loadAQI(); // Refresh AQI
     });
   }
 
+  Future<void> addActivity(String activityName, double emissions) async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return;
+
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('activities')
+          .add({
+            'activityName': activityName,
+            'emissions': emissions,
+            'timestamp': FieldValue.serverTimestamp(),
+          });
+
+      print("Activity added successfully.");
+    } catch (e) {
+      print("Error adding activity: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error adding activity: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 193, 202, 196),
+      backgroundColor: const Color.fromARGB(255, 193, 202, 196),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -206,19 +274,19 @@ class _HomeFeatureScreenState extends State<HomeFeatureScreen> {
                       return const Text('Error loading username');
                     } else {
                       return Row(
-                          children: [
-                            Icon(CupertinoIcons.person, size: 28, color: Colors.black87), 
-                            const SizedBox(width: 8), 
-                            Text(
-                              'Hello, ${snapshot.data}',
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w200,
-                                color: Colors.black87, 
-                              ),
+                        children: [
+                          Icon(CupertinoIcons.person, size: 28, color: Colors.black87), 
+                          const SizedBox(width: 8), 
+                          Text(
+                            'Hello, ${snapshot.data}',
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w200,
+                              color: Colors.black87, 
                             ),
-                          ],
-                        );
+                          ),
+                        ],
+                      );
                     }
                   },
                 ),
@@ -327,16 +395,16 @@ class _HomeFeatureScreenState extends State<HomeFeatureScreen> {
   }
 
   Widget _buildActionButton(String label, IconData icon, VoidCallback onTap) {
-  return ElevatedButton.icon(
-    onPressed: onTap,
-    icon: Icon(icon, size: 24, color: Colors.white), 
-    label: Text(label, style: const TextStyle(fontSize: 18)), 
-    style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.blueGrey,
-      foregroundColor: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14), 
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), 
-    ),
-  );
-}
+    return ElevatedButton.icon(
+      onPressed: onTap,
+      icon: Icon(icon, size: 24, color: Colors.white), 
+      label: Text(label, style: const TextStyle(fontSize: 18)), 
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blueGrey,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14), 
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), 
+      ),
+    );
+  }
 }

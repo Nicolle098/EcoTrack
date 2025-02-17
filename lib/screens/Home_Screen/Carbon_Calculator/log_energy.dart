@@ -27,8 +27,24 @@ class _LogEnergyScreenState extends State<LogEnergyScreen> {
   final TextEditingController lpgController = TextEditingController();
   final TextEditingController woodController = TextEditingController();
 
+  Future<void> addActivity(String activityName, double emissions) async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return;
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('log_energy')
+        .add({
+          'activityName': activityName,
+          'totalEmissions': emissions,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+
+    print("Energy log added successfully.");
+  }
+
   void _calculateAndLogEnergy() async {
-    int householdSize = int.tryParse(householdSizeController.text) ?? 1;
     double electricityConsumption = double.tryParse(electricityController.text) ?? 0.0;
     double gasConsumption = double.tryParse(gasController.text) ?? 0.0;
     double heatingOilConsumption = double.tryParse(heatingOilController.text) ?? 0.0;
@@ -44,21 +60,9 @@ class _LogEnergyScreenState extends State<LogEnergyScreen> {
     double woodEmissions = woodConsumption * EmissionFactors.woodEmissionFactor;
 
     double totalEmissions = electricityEmissions + gasEmissions + heatingOilEmissions + coalEmissions + lpgEmissions + woodEmissions;
-    double perPersonEmissions = totalEmissions / householdSize;
 
     try {
-      await FirebaseFirestore.instance.collection('log_energy').add({
-        'userId': FirebaseAuth.instance.currentUser?.uid,
-        'electricityConsumption': electricityConsumption,
-        'gasConsumption': gasConsumption,
-        'heatingOilConsumption': heatingOilConsumption,
-        'coalConsumption': coalConsumption,
-        'lpgConsumption': lpgConsumption,
-        'woodConsumption': woodConsumption,
-        'totalEmissions': totalEmissions,
-        'perPersonEmissions': perPersonEmissions,
-        'timestamp': Timestamp.now(),
-      });
+      await addActivity('Energy Consumption', totalEmissions);
       print("Energy log added successfully!");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -96,6 +100,7 @@ class _LogEnergyScreenState extends State<LogEnergyScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              _buildTextField(householdSizeController, 'Household Size'),
               _buildTextField(electricityController, 'Electricity Consumption (kWh)'),
               _buildTextField(gasController, 'Natural Gas Consumption (kWh)'),
               _buildTextField(heatingOilController, 'Heating Oil Consumption (liters)'),

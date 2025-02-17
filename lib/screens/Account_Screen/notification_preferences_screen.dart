@@ -106,16 +106,6 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                       },
                     ),
                     const Divider(),
-                    SwitchListTile(
-                      title: Text('SMS Notifications', style: GoogleFonts.lato(fontSize: 18)),
-                      value: _smsNotifications,
-                      onChanged: (bool value) {
-                        setState(() {
-                          _smsNotifications = value;
-                        });
-                        _savePreferences();
-                      },
-                    ),
                   ],
                 ),
               ),
