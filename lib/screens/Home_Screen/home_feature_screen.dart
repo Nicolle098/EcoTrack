@@ -188,7 +188,7 @@ class _HomeFeatureScreenState extends State<HomeFeatureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Color.fromARGB(255, 193, 202, 196),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(

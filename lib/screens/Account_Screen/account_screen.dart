@@ -7,6 +7,7 @@ import 'package:modernlogintute/screens/Login_Screen/login_screen.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'notification_preferences_screen.dart';
 import 'privacy_settings_screen.dart';
 import 'faq_screen.dart';
@@ -24,7 +25,6 @@ class _AccountScreenState extends State<AccountScreen> {
   final TextEditingController usernameController = TextEditingController();
   User? user = FirebaseAuth.instance.currentUser;
   String username = '';
-  int points = 0;
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -37,14 +37,12 @@ class _AccountScreenState extends State<AccountScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       username = prefs.getString('username') ?? '';
-      points = prefs.getInt('points') ?? 0;
     });
 
     if (user != null) {
       DocumentSnapshot userData = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
       setState(() {
         username = userData['username'] ?? '';
-        points = userData['points'] ?? 0;
       });
       _saveUserData();
     }
@@ -53,18 +51,17 @@ class _AccountScreenState extends State<AccountScreen> {
   void _saveUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('username', username);
-    await prefs.setInt('points', points);
   }
 
   Future<void> _pickImage() async {
-  final picker = ImagePicker();
-  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
-  if (pickedFile != null) {
-    final File image = File(pickedFile.path);
-    await _uploadImage(image);
+    if (pickedFile != null) {
+      final File image = File(pickedFile.path);
+      await _uploadImage(image);
+    }
   }
-}
 
   Future<void> _uploadImage(File image) async {
     try {
@@ -99,14 +96,14 @@ class _AccountScreenState extends State<AccountScreen> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); 
+                Navigator.of(context).pop();
               },
               child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); 
-                _signOut(context); 
+                Navigator.of(context).pop();
+                _signOut(context);
               },
               child: const Text('Logout'),
             ),
@@ -135,7 +132,7 @@ class _AccountScreenState extends State<AccountScreen> {
             setState(() {
               username = usernameController.text;
             });
-            _saveUserData(); 
+            _saveUserData();
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Username updated successfully.")),
             );
@@ -147,12 +144,11 @@ class _AccountScreenState extends State<AccountScreen> {
         } else {
           docRef.set({
             'username': usernameController.text,
-            'points': points, 
           }).then((_) {
             setState(() {
               username = usernameController.text;
             });
-            _saveUserData(); 
+            _saveUserData();
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Username created successfully.")),
             );
@@ -202,14 +198,14 @@ class _AccountScreenState extends State<AccountScreen> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); 
+                Navigator.of(context).pop();
               },
               child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); 
-                _changePassword(); 
+                Navigator.of(context).pop();
+                _changePassword();
               },
               child: const Text('Change Password'),
             ),
@@ -259,14 +255,14 @@ class _AccountScreenState extends State<AccountScreen> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); 
+                Navigator.of(context).pop();
               },
               child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); 
-                _deleteAccount(); 
+                Navigator.of(context).pop();
+                _deleteAccount();
               },
               child: const Text('Delete'),
             ),
@@ -279,7 +275,7 @@ class _AccountScreenState extends State<AccountScreen> {
   void _contactSupport() {
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
-      path: 'support@yourapp.com',
+      path: 'ecotrack@gmail.com',
       queryParameters: {
         'subject': 'Support Request'
       }
@@ -304,9 +300,9 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 240, 240, 240), // Lighter background color
+      backgroundColor: const Color.fromARGB(255, 210, 214, 211), // Lighter background color
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 240, 240, 240), // Lighter background color
+        backgroundColor: const Color.fromARGB(255, 216, 219, 217), // Lighter background color
         title: const Text('Account'),
       ),
       body: SingleChildScrollView(
@@ -315,35 +311,34 @@ class _AccountScreenState extends State<AccountScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-            child: GestureDetector(
-              onTap: _pickImage,
-              child: CircleAvatar(
-                radius: 50,
-                backgroundImage: NetworkImage(user?.photoURL ?? 'https://via.placeholder.com/150'),
-                child: const Align(
-                  alignment: Alignment.bottomRight,
-                  child: CircleAvatar(
-                    radius: 15,
-                    backgroundColor: Colors.white,
-                    child: Icon(Icons.camera_alt, size: 15, color: Colors.grey),
+              child: GestureDetector(
+                onTap: _pickImage,
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(user?.photoURL ?? 'https://via.placeholder.com/150'),
+                  child: const Align(
+                    alignment: Alignment.bottomRight,
+                    child: CircleAvatar(
+                      radius: 15,
+                      backgroundColor: Colors.white,
+                      child: Icon(Icons.camera_alt, size: 15, color: Colors.grey),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
             const SizedBox(height: 20),
-            Text('Username: $username', style: const TextStyle(fontSize: 18)),
+            Text('Username: $username', style: GoogleFonts.lato(fontSize: 18)),
             const SizedBox(height: 10),
-            Text('Email: ${user?.email ?? 'N/A'}', style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 10),
-            Text('Points: $points', style: const TextStyle(fontSize: 18)),
+            Text('Email: ${user?.email ?? 'N/A'}', style: GoogleFonts.lato(fontSize: 18)),
             const SizedBox(height: 20),
             TextField(
               controller: usernameController,
               decoration: InputDecoration(
                 labelText: 'New Username',
+                labelStyle: GoogleFonts.lato(),
                 filled: true,
-                fillColor: Colors.grey[100], 
+                fillColor: const Color.fromARGB(255, 237, 240, 238),
                 border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8)),
                   borderSide: BorderSide.none,
@@ -355,157 +350,137 @@ class _AccountScreenState extends State<AccountScreen> {
               onPressed: _changeUsername,
               style: TextButton.styleFrom(
                 foregroundColor: Colors.black87,
-                backgroundColor: const Color.fromARGB(255, 240, 240, 240), // Lighter background color
+                backgroundColor: const Color.fromARGB(255, 237, 240, 238),
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
-              child: const Text('Change Username',
-              style: TextStyle(fontSize: 17),
-              ),
+              child: Text('Change Username', style: GoogleFonts.lato(fontSize: 17)),
             ),
             const SizedBox(height: 10),
             TextButton(
               onPressed: _inviteFriend,
               style: TextButton.styleFrom(
                 foregroundColor: Colors.black87,
-                backgroundColor: const Color.fromARGB(255, 240, 240, 240), // Lighter background color
+                backgroundColor: const Color.fromARGB(255, 237, 240, 238),
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
-              child: const Text('Invite a Friend',
-              style: TextStyle(fontSize: 17),
-              ),
+              child: Text('Invite a Friend', style: GoogleFonts.lato(fontSize: 17)),
             ),
             const SizedBox(height: 10),
             TextButton(
               onPressed: () => _confirmSignOut(context),
               style: TextButton.styleFrom(
                 foregroundColor: Colors.black87,
-                backgroundColor: const Color.fromARGB(255, 240, 240, 240), // Lighter background color
+                backgroundColor: const Color.fromARGB(255, 237, 240, 238),
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
-              child: const Text('Logout',
-              style: TextStyle(fontSize: 17),
-              ),
+              child: Text('Logout', style: GoogleFonts.lato(fontSize: 17)),
             ),
             const SizedBox(height: 10),
             const Divider(height: 40),
-            const Text('Settings', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text('Settings', style: GoogleFonts.lato(fontSize: 18, fontWeight: FontWeight.bold)),
             TextButton(
               onPressed: () => _confirmChangePassword(context),
               style: TextButton.styleFrom(
                 foregroundColor: Colors.black87,
-                backgroundColor: const Color.fromARGB(255, 240, 240, 240), 
+                backgroundColor: const Color.fromARGB(255, 237, 240, 238),
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
-              child: const Text('Change Password',
-              style: TextStyle(fontSize: 17),
-              ),
+              child: Text('Change Password', style: GoogleFonts.lato(fontSize: 17)),
             ),
             const SizedBox(height: 10),
             TextButton(
               onPressed: _notificationPreferences,
               style: TextButton.styleFrom(
                 foregroundColor: Colors.black87,
-                backgroundColor: const Color.fromARGB(255, 240, 240, 240), 
+                backgroundColor: const Color.fromARGB(255, 237, 240, 238),
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
-              child: const Text('Notification Preferences',
-              style: TextStyle(fontSize: 17),
-              ),
+              child: Text('Notification Preferences', style: GoogleFonts.lato(fontSize: 17)),
             ),
             const SizedBox(height: 10),
             TextButton(
               onPressed: _privacySettings,
               style: TextButton.styleFrom(
                 foregroundColor: Colors.black87,
-                backgroundColor: const Color.fromARGB(255, 240, 240, 240), 
+                backgroundColor: const Color.fromARGB(255, 237, 240, 238),
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
-              child: const Text('Privacy Settings',
-              style: TextStyle(fontSize: 17),
-              ),
+              child: Text('Privacy Settings', style: GoogleFonts.lato(fontSize: 17)),
             ),
             const Divider(height: 40),
-            const Text('Account Actions', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text('Account Actions', style: GoogleFonts.lato(fontSize: 18, fontWeight: FontWeight.bold)),
             TextButton(
               onPressed: () => _confirmDeleteAccount(context),
               style: TextButton.styleFrom(
                 foregroundColor: Colors.black87,
-                backgroundColor: const Color.fromARGB(255, 240, 240, 240), 
+                backgroundColor: const Color.fromARGB(255, 237, 240, 238),
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
-              child: const Text('Delete Account',
-              style: TextStyle(fontSize: 17),
-              ),
+              child: Text('Delete Account', style: GoogleFonts.lato(fontSize: 17)),
             ),
             const Divider(height: 40),
-            const Text('Additional Information', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            const Text('App Version: 1.0.0', style: TextStyle(fontSize: 16)),
+            Text('Additional Information', style: GoogleFonts.lato(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text('App Version: 1.0.0', style: GoogleFonts.lato(fontSize: 16)),
             TextButton(
               onPressed: _termsOfService,
               style: TextButton.styleFrom(
                 foregroundColor: Colors.black87,
-                backgroundColor: const Color.fromARGB(255, 240, 240, 240), 
+                backgroundColor: const Color.fromARGB(255, 237, 240, 238),
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
-              child: const Text('Terms of Service',
-              style: TextStyle(fontSize: 17),
-              ),
+              child: Text('Terms of Service', style: GoogleFonts.lato(fontSize: 17)),
             ),
             const Divider(height: 40),
-            const Text('Support', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text('Support', style: GoogleFonts.lato(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
             TextButton(
               onPressed: _contactSupport,
               style: TextButton.styleFrom(
                 foregroundColor: Colors.black87,
-                backgroundColor: const Color.fromARGB(255, 240, 240, 240),
+                backgroundColor: const Color.fromARGB(255, 237, 240, 238),
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
-              child: const Text('Contact Support',
-              style: TextStyle(fontSize: 17),
-              ),
+              child: Text('Contact Support', style: GoogleFonts.lato(fontSize: 17)),
             ),
-            const SizedBox(height: 10), 
+            const SizedBox(height: 10),
             TextButton(
               onPressed: _faqs,
               style: TextButton.styleFrom(
                 foregroundColor: Colors.black87,
-                backgroundColor: const Color.fromARGB(255, 240, 240, 240), 
+                backgroundColor: const Color.fromARGB(255, 237, 240, 238),
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
-              child: const Text('FAQs',
-              style: TextStyle(fontSize: 17),
-              ),
+              child: Text('FAQs', style: GoogleFonts.lato(fontSize: 17)),
             ),
           ],
         ),

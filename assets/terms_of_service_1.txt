@@ -1,15 +1,13 @@
 Terms and conditions
 
 Terms and Conditions
-Last Updated: [Date]
-Welcome to [Your Company Name]!
-These Terms and Conditions ("Terms") govern your use of our website located at 
-[Your Website URL] (the "Site") and the services provided by [Your Company 
-Name] (the "Services"). By accessing or using our Site and Services, you agree to 
+Last Updated: 18.02.2025
+Welcome to EcoTrack!
+These Terms and Conditions govern your use of our website and the services provided by EcoTrack. By accessing or using our Site and Services, you agree to 
 be bound by these Terms. If you do not agree with any part of these Terms, you 
 must not use our Site or Services.
 1. Acceptance of Terms By accessing or using our Site and Services, you confirm 
-that you are at least [age] years old and have the legal capacity to enter into these 
+that you are at least 12 years old and have the legal capacity to enter into these 
 Terms.
 2. Changes to Terms We reserve the right to modify these Terms at any time. Any 
 changes will be effective immediately upon posting on the Site. Your continued 
@@ -30,27 +28,25 @@ minors in any way.
 *	To transmit, or procure the sending of, any advertising or promotional 
 material.
 5. Intellectual Property All content, trademarks, and other intellectual property 
-on the Site are the property of [Your Company Name] or its licensors. You may 
+on the Site are the property of EcoTrack or its licensors. You may 
 not reproduce, distribute, or create derivative works from any content on the Site 
 without our express written permission.
-6. Limitation of Liability To the fullest extent permitted by law, [Your Company 
-Name] shall not be liable for any indirect, incidental, special, consequential, or 
+6. Limitation of Liability To the fullest extent permitted by law, EcoTrack shall not be liable for any indirect, incidental, special, consequential, or 
 punitive damages, including without limitation loss of profits, data, use, goodwill, 
 or other intangible losses, resulting from:
 *	Your access to or use of, or inability to access or use, the Site or Services.
 *	Any conduct or content of any third party on the Site.
 *	Any content obtained from the Site.
-7. Indemnification You agree to defend, indemnify, and hold harmless [Your 
-Company Name], its affiliates, and their respective officers, directors, employees, 
+7. Indemnification You agree to defend, indemnify, and hold harmless EcoTrack, its affiliates, and their respective officers, directors, employees, 
 and agents from and against any claims, liabilities, damages, judgments, awards, 
 losses, costs, expenses, or fees (including reasonable attorneys' fees) arising out 
 of or relating to your violation of these Terms or your use of the Site and Services.
 8. Governing Law These Terms shall be governed by and construed in accordance 
-with the laws of [Your State/Country], without regard to its conflict of law 
+with the laws of Romania, without regard to its conflict of law 
 principles.
 9. Contact Information If you have any questions about these Terms, please 
-contact us at: [Your Company Name] 
-[Your Address] 
-[Your Email Address] 
-[Your Phone Number]
+contact us at: 
+EcoTrack
+ecotrack@gmail.com
+
 
