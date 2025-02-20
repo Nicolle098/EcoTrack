@@ -1,0 +1,2 @@
+D:/EcoTrack/ecotrack/android/app/.cxx/RelWithDebInfo/44n1t5j3/x86_64/CMakeFiles/edit_cache.dir
+D:/EcoTrack/ecotrack/android/app/.cxx/RelWithDebInfo/44n1t5j3/x86_64/CMakeFiles/rebuild_cache.dir
